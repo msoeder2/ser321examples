@@ -4,8 +4,8 @@ apply plugin: 'application'
 //define main class
 mainClassName = 'Multiply'
 
-// task which will run Main with default parameters, 
-// can be overwritten with: gradle runApp --args '3 4' 
+// task which will run Main with default parameters,
+// can be overwritten with: gradle runApp --args '3 4'
 task runApp(type: JavaExec) {
   group 'Multiply tasks'
   description 'Tasks which runs Multiply with default parameters'
@@ -19,11 +19,11 @@ task runApp(type: JavaExec) {
   args '2'
 }
 
-// task which will run Main with default parameters, 
+// task which will run Main with default parameters,
 // but also accepts new parameter this time with given names
 // Example: gradle runAppAgain -Pnum1=9 -Pnum2=10
 // Example2 (this will make Gradle run more quietly in the console):
-//   gradle runAppAgain -Pnum1=9 -Pnum2=10 -q --console=plain 
+//   gradle runAppAgain -Pnum1=9 -Pnum2=10 -q --console=plain
 task runAppAgain(type: JavaExec) {
   group 'Multiply tasks'
   description 'Tasks which runs Multiply with default parameters or given values'
@@ -51,10 +51,30 @@ task runFraction(type: JavaExec) {
   main = 'Fraction'
 }
 
-// Try:
-// 1. Change Fraction.main so it accepts 2 arguments
-// 2. Create a new gradle tasks that accepts two arguments and 
-//    can be called as: gradle runFrac -Pdenom=4 -Pnum=3 or as gradle runFrac -Pnum=3 -Pdenom=4 , also make sure it can run with only 1 or no arguments
+// New task to run Fraction with arguments
+task runFrac(type: JavaExec) {
+    group 'Fraction Tasks'
+    description 'Tasks which runs Fraction with arguments'
+
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'Fraction'
+
+    // Default values if no arguments are provided
+    def defaultNum = 1
+    def defaultDenom = 1
+
+    // Use provided arguments if available
+    if (project.hasProperty("num")) {
+        defaultNum = project.getProperty('num')
+    }
+    if (project.hasProperty("denom")) {
+        defaultDenom = project.getProperty('denom')
+    }
+
+    // Pass arguments to the main class
+    args defaultNum, defaultDenom
+}
 
 // Example how you can add that libraries can be pulled from mavenCentral()
 // repositories {
